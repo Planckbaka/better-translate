@@ -1,0 +1,33 @@
+{
+  "name": "better-translate",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI-native 翻译扩展：上下文感知的划词翻译与沉浸式网页翻译，内置透明可控的模型管理",
+  "packageManager": "pnpm@10.17.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @bt/extension dev",
+    "build": "pnpm --filter @bt/extension build",
+    "zip": "pnpm --filter @bt/extension zip",
+    "test": "vitest run",
+    "typecheck": "pnpm --filter @bt/extension compile",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Planckbaka/better-translate.git"
+  },
+  "homepage": "https://github.com/Planckbaka/better-translate#readme",
+  "bugs": "https://github.com/Planckbaka/better-translate/issues",
+  "author": "Planckbaka",
+  "license": "MIT",
+  "keywords": ["browser-extension", "translation", "llm", "immersive-translate", "chrome-extension"],
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}

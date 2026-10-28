@@ -1,0 +1,66 @@
+name: 🐛 Bug 报告
+description: 报告一个可以复现的问题
+title: '[Bug] '
+labels: ['bug', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请尽量填写以下信息，越详细越容易定位问题。
+        提交前建议先搜索[已有 Issue](https://github.com/Planckbaka/better-translate/issues?q=is%3Aissue) 避免重复。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么？
+      description: 描述遇到的问题与期望的行为。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开 …
+        2. 点击 …
+        3. 出现 …
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 控制台报错 / 日志
+      description: 打开扩展页右键「检查弹出内容」或 chrome://extensions 里 background 的「服务工作进程」查看控制台，粘贴报错（注意抹掉 API Key）。
+      render: shell
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 浏览器
+      options:
+        - Chrome
+        - Edge
+        - Chromium 系（Brave / Arc 等）
+        - Firefox
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 扩展版本 / 浏览器版本
+      placeholder: 'v0.1.0 / Chrome 141'
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 自查清单
+      options:
+        - label: 我已搜索过现有 Issue，确认没有重复
+        - label: 我已在设置页尝试「测试」按钮并附上结果
+        - label: 报错信息中不包含 API Key 等敏感信息

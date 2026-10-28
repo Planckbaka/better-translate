@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.output/
+.wxt/
+stats.html
+*.log
+.DS_Store
+.env
+.env.*
+*.zip
+
+# 会话工具产物
+.mimosa/
+.v2c/
+.video_agent/
+.zcode/
+out/

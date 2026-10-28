@@ -1,5 +1,7 @@
-/* Better Translate 设计令牌 —— popup / options 共用，浅深色自适应 */
-:root {
+/* Better Translate 设计令牌 —— popup / options / content 面板共用，浅深色自适应 */
+/* content 面板运行在 Shadow DOM 里，:host 承担 :root 的角色 */
+:root,
+:host {
   --bg: #f7f7f8;
   --surface: #ffffff;
   --surface-2: #f0f0f2;
@@ -15,7 +17,8 @@
   --shadow: 0 1px 3px rgb(0 0 0 / 6%), 0 4px 16px rgb(0 0 0 / 6%);
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root,
+  :host {
     --bg: #17171a;
     --surface: #202024;
     --surface-2: #2a2a30;
@@ -209,4 +212,163 @@ a {
   50% {
     opacity: 0;
   }
+}
+
+/* ————— 划词面板（content script，Shadow DOM 内） ————— */
+
+.bt-fab {
+  position: fixed;
+  z-index: 2147483646;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.12s;
+}
+.bt-fab:hover {
+  transform: scale(1.1);
+}
+
+.bt-panel {
+  position: fixed;
+  z-index: 2147483647;
+  width: 380px;
+  max-height: 430px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  animation: bt-pop 0.12s ease-out;
+}
+@keyframes bt-pop {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bt-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex: none;
+}
+.bt-panel__text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.bt-panel__tabs {
+  display: flex;
+  gap: 2px;
+  padding: 5px 8px 0;
+  border-bottom: 1px solid var(--border);
+  flex: none;
+}
+.bt-panel__tabs .bt-tab {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.bt-panel__body {
+  padding: 12px;
+  overflow: auto;
+  min-height: 52px;
+  max-height: 330px;
+}
+
+/* 迷你 Markdown（解释 Tab）：无依赖的受限渲染，输出为 React 元素而非 HTML */
+.bt-md p {
+  margin: 0 0 6px;
+}
+.bt-md ul,
+.bt-md ol {
+  margin: 4px 0 8px;
+  padding-left: 20px;
+}
+.bt-md li {
+  margin: 2px 0;
+}
+.bt-md h1,
+.bt-md h2,
+.bt-md h3,
+.bt-md h4 {
+  font-size: 13px;
+  margin: 8px 0 4px;
+}
+.bt-md code {
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+.bt-md strong {
+  font-weight: 600;
+}
+.bt-md blockquote {
+  margin: 4px 0;
+  padding: 2px 10px;
+  border-left: 3px solid var(--border);
+  color: var(--text-2);
+}
+.bt-md hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 8px 0;
+}
+
+/* 原文对照 */
+.bt-origin {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.bt-origin__mark {
+  background: var(--accent-weak);
+  color: var(--text);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.bt-iconbtn {
+  border: none;
+  background: none;
+  color: var(--text-2);
+  border-radius: var(--radius-sm);
+  padding: 3px 7px;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.bt-iconbtn:hover {
+  background: var(--surface-2);
+  color: var(--text);
 }

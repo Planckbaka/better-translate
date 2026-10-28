@@ -84,6 +84,8 @@ export interface Settings {
   /** 通用偏好 */
   targetLang: string // 默认目标语言
   triggerDelayMs: number // 划词浮钮延迟
+  /** 划词触发方式：button = 先浮小圆钮再点开面板；panel = 选中直接展开面板 */
+  selectionTrigger: 'button' | 'panel'
   pageDisplayMode: DisplayMode
   sendPageTitle: boolean // 是否携带页面标题作为上下文
   onlyLocalModel: boolean // 隐私：仅允许本地 provider
@@ -97,6 +99,7 @@ export const DEFAULT_SETTINGS: Settings = {
   slots: DEFAULT_SLOTS,
   targetLang: 'zh-Hans',
   triggerDelayMs: 300,
+  selectionTrigger: 'button',
   pageDisplayMode: 'bilingual',
   sendPageTitle: true,
   onlyLocalModel: false,

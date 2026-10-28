@@ -26,6 +26,36 @@ export default defineBackground(() => {
     })
   })
 
+  // —— 划词触发：快捷键（Alt+T）与右键菜单 → 转发给当前标签页的 content script ——
+  browser.commands.onCommand.addListener((command) => {
+    if (command !== 'translate-selection') return
+    void sendToActiveTab()
+  })
+
+  browser.runtime.onInstalled.addListener(() => {
+    browser.contextMenus.removeAll(() => {
+      browser.contextMenus.create({
+        id: 'bt-translate-selection',
+        title: 'Better Translate：翻译选中文本',
+        contexts: ['selection'],
+      })
+    })
+  })
+
+  browser.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId !== 'bt-translate-selection') return
+    if (tab?.id !== undefined) {
+      void browser.tabs.sendMessage(tab.id, { type: 'bt/translateSelection' }).catch(() => undefined)
+    }
+  })
+
+  async function sendToActiveTab(): Promise<void> {
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true })
+    if (tab?.id !== undefined) {
+      await browser.tabs.sendMessage(tab.id, { type: 'bt/translateSelection' }).catch(() => undefined)
+    }
+  }
+
   // —— 一次性请求：模型目录 / 连通测试 / 用量汇总 ——
   browser.runtime.onMessage.addListener(async (msg: BgRequest): Promise<BgResponse> => {
     try {

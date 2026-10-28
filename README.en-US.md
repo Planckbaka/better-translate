@@ -25,8 +25,12 @@ The model-management layer is inspired by [magpie](https://github.com/yetone): a
 
 ## ✨ Features
 
-### Shipped (v0.1.0)
+### Shipped (v0.2.0)
 
+- **Selection AI** — highlight text to surface a floating "译" button (or expand the panel directly), trigger via `Alt+T` / double-click / context menu; a streaming panel with **Translation / Explain / Original** tabs, where Explain covers senses, part of speech, collocations and example sentences
+- **Context-aware** — page title and surrounding sentences ride along with the selection, so "bank" lands on the right sense
+- **Retry** — one click to re-translate the selection with the strong model slot
+- **Site rules** — disable selection translation per site, wildcard subdomains supported
 - **🔗 Multi-provider registry** — presets for Zhipu GLM / DeepSeek / OpenAI / Anthropic / Google Gemini / Moonshot Kimi / SiliconFlow / Ollama, plus any OpenAI-compatible custom endpoint (one-api, new-api, or a **local magpie gateway**)
 - **🎯 Per-feature model slots** — selection / explain / page / retry each bound to their own model: fast tiers for bulk work, strong tiers for hard text
 - **⚡ Streaming translation** — popup scratchpad with SSE streaming, ⌘/Ctrl + Enter to translate
@@ -36,7 +40,6 @@ The model-management layer is inspired by [magpie](https://github.com/yetone): a
 
 ### On the roadmap
 
-- Selection AI: instant translate + word sense / part of speech / collocations / example sentences (M1)
 - Immersive webpage translation: bilingual / replace / hover modes with batching and progressive rendering (M2)
 - Page-level glossary warm-up for terminology consistency (M2)
 - Model groups with failover, quota display (M3)
@@ -74,7 +77,7 @@ Or grab a prebuilt zip from [Releases](https://github.com/Planckbaka/better-tran
 | Milestone | Scope | Status |
 | --- | --- | --- |
 | M0 | Provider management + popup translation + usage stats | ✅ v0.1.0 |
-| M1 | Selection AI: trigger system + streaming translate/explain/examples panel | 🚧 In progress |
+| M1 | Selection AI: trigger system + streaming translate/explain/original panel | ✅ v0.2.0 |
 | M2 | Immersive page translation: smart segmentation, batching, 3 display modes, SPA support, caching, glossary warm-up | 📋 |
 | M3 | Model group failover, catalog discovery, quota display, page-sticky routing | 📋 |
 | M4 | Vocabulary notebook, glossary injection, history, custom prompts & styles | 📋 |

@@ -602,6 +602,24 @@ function GeneralTab({
       </div>
       <div className="bt-card bt-row">
         <div style={{ width: 130 }}>
+          <div style={{ fontWeight: 600 }}>划词触发方式</div>
+          <div className="bt-muted">选中文字后的响应方式</div>
+        </div>
+        <select
+          value={settings.selectionTrigger}
+          onChange={(e) => {
+            const v = e.target.value as Settings['selectionTrigger']
+            update((s) => {
+              s.selectionTrigger = v
+            })
+          }}
+        >
+          <option value="button">浮钮（先出小圆钮，点击展开）</option>
+          <option value="panel">直接展开面板</option>
+        </select>
+      </div>
+      <div className="bt-card bt-row">
+        <div style={{ width: 130 }}>
           <div style={{ fontWeight: 600 }}>页面显示模式</div>
           <div className="bt-muted">沉浸式翻译的默认展示方式</div>
         </div>
@@ -633,6 +651,95 @@ function GeneralTab({
             })
           }}
         />
+      </div>
+      <SiteRules settings={settings} update={update} />
+    </div>
+  )
+}
+
+function SiteRules({
+  settings,
+  update,
+}: { settings: Settings; update: (fn: (s: Settings) => void) => void }) {
+  const [pattern, setPattern] = useState('')
+
+  function addRule() {
+    const p = pattern.trim().toLowerCase()
+    if (!p) return
+    update((s) => {
+      // 同 pattern 的旧规则替换位置，保持"后写覆盖先写"的顺序语义
+      s.siteRules = [...s.siteRules.filter((r) => r.pattern !== p), { pattern: p, enabled: false }]
+    })
+    setPattern('')
+  }
+
+  return (
+    <div className="bt-card">
+      <div className="bt-row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
+        <div>
+          <div style={{ fontWeight: 600 }}>站点规则</div>
+          <div className="bt-muted">
+            禁用的站点不出现划词按钮与面板。支持 <code>example.com</code>（含子域）与{' '}
+            <code>*.example.com</code>（仅子域），规则按顺序生效，后写覆盖先写。
+          </div>
+        </div>
+      </div>
+      {settings.siteRules.length === 0 && <div className="bt-muted">暂无规则，所有站点启用划词翻译。</div>}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {settings.siteRules.map((rule, i) => (
+          <div key={`${rule.pattern}-${i}`} className="bt-row">
+            <input
+              value={rule.pattern}
+              onChange={(e) => {
+                const v = e.target.value.trim().toLowerCase()
+                update((s) => {
+                  const target = s.siteRules[i]
+                  if (target) target.pattern = v
+                })
+              }}
+              style={{ flex: 1, fontFamily: 'ui-monospace, monospace', fontSize: 12 }}
+            />
+            <span className="bt-muted" style={{ width: 76 }}>
+              {rule.enabled === false ? '已禁用' : '已启用'}
+            </span>
+            <button
+              type="button"
+              className={`bt-switch ${rule.enabled === false ? '' : 'on'}`}
+              title={rule.enabled === false ? '点击启用' : '点击禁用'}
+              onClick={() => {
+                update((s) => {
+                  const target = s.siteRules[i]
+                  if (target) target.enabled = target.enabled === false
+                })
+              }}
+            />
+            <button
+              type="button"
+              className="bt-btn bt-btn--sm bt-btn--danger"
+              onClick={() => {
+                update((s) => {
+                  s.siteRules.splice(i, 1)
+                })
+              }}
+            >
+              删除
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="bt-row" style={{ marginTop: 8 }}>
+        <input
+          value={pattern}
+          placeholder="example.com 或 *.example.com"
+          onChange={(e) => setPattern(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') addRule()
+          }}
+          style={{ flex: 1, fontFamily: 'ui-monospace, monospace', fontSize: 12 }}
+        />
+        <button type="button" className="bt-btn bt-btn--sm" onClick={addRule}>
+          添加并禁用
+        </button>
       </div>
     </div>
   )

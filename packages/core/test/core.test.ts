@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { buildExplainMessages, buildTranslateMessages, decideDirection, detectLang } from '../src'
+import {
+  buildExplainMessages,
+  buildTranslateMessages,
+  decideDirection,
+  detectLang,
+  hostMatches,
+  siteEnabled,
+} from '../src'
 
 describe('detectLang', () => {
   it('识别日文假名', () => {
@@ -56,5 +63,41 @@ describe('buildExplainMessages', () => {
     const msgs = buildExplainMessages({ text: 'serendipity', to: 'zh-Hans' })
     expect(msgs[0]!.content).toContain('释义')
     expect(msgs[0]!.content).toContain('例句')
+  })
+})
+
+describe('hostMatches', () => {
+  it('精确 host', () => {
+    expect(hostMatches('github.com', 'github.com')).toBe(true)
+    expect(hostMatches('gitlab.com', 'github.com')).toBe(false)
+  })
+  it('子域后缀匹配', () => {
+    expect(hostMatches('docs.example.com', 'example.com')).toBe(true)
+    expect(hostMatches('example.com', 'example.com')).toBe(true)
+    expect(hostMatches('notexample.com', 'example.com')).toBe(false)
+  })
+  it('通配模式', () => {
+    expect(hostMatches('docs.example.com', '*.example.com')).toBe(true)
+    expect(hostMatches('example.com', '*.example.com')).toBe(false)
+  })
+  it('容忍 URL 与 www 前缀输入', () => {
+    expect(hostMatches('www.GitHub.com', 'https://github.com/docs')).toBe(true)
+  })
+})
+
+describe('siteEnabled', () => {
+  it('无规则默认启用', () => {
+    expect(siteEnabled([], 'example.com')).toBe(true)
+  })
+  it('禁用规则生效', () => {
+    expect(siteEnabled([{ pattern: 'example.com', enabled: false }], 'docs.example.com')).toBe(false)
+  })
+  it('后写规则覆盖先写', () => {
+    const rules = [
+      { pattern: 'example.com', enabled: false },
+      { pattern: 'docs.example.com', enabled: true },
+    ]
+    expect(siteEnabled(rules, 'docs.example.com')).toBe(true)
+    expect(siteEnabled(rules, 'blog.example.com')).toBe(false)
   })
 })

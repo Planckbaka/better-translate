@@ -9,7 +9,13 @@ export default defineConfig({
   manifest: {
     name: 'Better Translate',
     description: 'AI 原生翻译：上下文感知的划词翻译与沉浸式网页翻译，模型管理透明可控',
-    permissions: ['storage'],
+    permissions: ['storage', 'contextMenus'],
     host_permissions: ['http://*/*', 'https://*/*'],
+    commands: {
+      'translate-selection': {
+        suggested_key: { default: 'Alt+T' },
+        description: '翻译选中的文本',
+      },
+    },
   },
 })

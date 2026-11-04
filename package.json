@@ -27,7 +27,7 @@
   "keywords": ["browser-extension", "translation", "llm", "immersive-translate", "chrome-extension"],
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "typescript": "^5.6.3",
+    "typescript": "^7.0.2",
     "vitest": "^2.1.8"
   }
 }

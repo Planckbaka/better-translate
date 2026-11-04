@@ -26,7 +26,7 @@
   "license": "MIT",
   "keywords": ["browser-extension", "translation", "llm", "immersive-translate", "chrome-extension"],
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.6.4",
     "typescript": "^5.6.3",
     "vitest": "^2.1.8"
   }
